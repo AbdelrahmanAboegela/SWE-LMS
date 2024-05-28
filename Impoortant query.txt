@@ -1,0 +1,52 @@
+-- Step 1: Drop the existing trigger (if it exists)
+DROP TRIGGER IF EXISTS before_insert_category;
+
+-- Step 2: Create the new trigger
+DELIMITER //
+CREATE TRIGGER before_insert_category
+BEFORE INSERT ON tblcategory
+FOR EACH ROW
+BEGIN
+    SET NEW.CategoryId = (SELECT COALESCE(MAX(CategoryId), 0) + 1 FROM tblcategory);
+END;
+//
+DELIMITER ;
+
+-- Step 3: Update existing CategoryId values based on Dewey Decimal order
+SET @row_number = 0;
+UPDATE tblcategory
+SET CategoryId = (@row_number := @row_number + 1)
+ORDER BY CAST(DDecimal AS DECIMAL);
+
+
+
+
+
+
+-- Delete data from tblbooknumber
+DELETE FROM tblbooknumber;
+
+-- Delete data from tblbooks
+DELETE FROM tblbooks;
+
+-- Delete data from tblborrow
+DELETE FROM tblborrow;
+
+-- Delete data from tblborrower
+DELETE FROM tblborrower;
+
+-- Delete data from tblcategory
+DELETE FROM tblcategory;
+
+-- Delete data from tblreturn
+DELETE FROM tblreturn;
+
+
+
+
+ALTER TABLE tblbooks
+DROP COLUMN BookPrice;
+
+
+
+ALTER TABLE `tblbooks` ADD COLUMN `NumberOfCopies` INT DEFAULT 0;
