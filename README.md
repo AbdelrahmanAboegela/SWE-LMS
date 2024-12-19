@@ -9,8 +9,6 @@
     - [Clone the Repository](#1-clone-the-repository)
     - [Set up the MySQL Database](#2-set-up-the-mysql-database)
     - [Run the Application](#3-run-the-application)
-5. [Contributing](#contributing)
-6. [License](#license)
 
 ## Overview
 
